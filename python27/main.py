@@ -30,6 +30,8 @@ class Root(webapp2.RequestHandler):
 class Pata(webapp2.RequestHandler):
     def get(self):
         # とりあえずAとBをつなぐだけで返事を作っていますけど、パタタコカシーーになるように自分で直してください！
+        #a = self.request.get("a")
+        #b = self.request.get("b")
         pata = self.request.get("a") + self.request.get("b")
         self.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
         # テンプレートの内容を埋め込んで、返事を返す。
@@ -39,9 +41,31 @@ class Norikae(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
         self.response.write(networkTmpl.render(network=network))
+        fromA = self.request.get("from")
+        toB = self.request.get("to")
+
+    def print_station(fromA, toB):
+        print fromA
+        print toB
+
+class Norikae_Result(webapp2.RequestHandler):
+    def get(self):
+        self.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
 
 app = webapp2.WSGIApplication([
     ('/', Root),
     ('/pata', Pata),
     ('/norikae', Norikae),
+    ('/norikae/result', Norikae_Result),
 ], debug=True)
+
+
+
+        #if len(a) > len(b):
+         # n = len(b)
+        #else:
+         # n = len(a)
+        #if n > 0:
+         # pata = a[0] + b[0]
+        #for i in range(n-1):
+         # pata = pata + a[i+1] + b[i+1]

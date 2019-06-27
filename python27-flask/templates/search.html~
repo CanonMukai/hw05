@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <title>Fantasy Navigation : Route from 駒越 to 新大久保</title>
+        <link rel="stylesheet" href="/pure/pure-min.css">
+            </head>
+    <body>
+        
+        
+        駒越から出発し<p/>
+        <table border=0>
+            
+            <tr>
+                <td>21:40</td>
+                <td>に</td>
+                <td align=center bgcolor="#66c2a5">山手線:down</td>
+                <td>を</td>
+                <td align=center>巣鴨</td>
+                <td>まで乗って</td>
+                <td align=center>(21:45に到着)</td>
+            </tr>
+            
+            <tr>
+                <td>21:46</td>
+                <td>に</td>
+                <td align=center bgcolor="#66c2a5">山手線:down</td>
+                <td>を</td>
+                <td align=center>大塚</td>
+                <td>まで乗って</td>
+                <td align=center>(21:51に到着)</td>
+            </tr>
+            
+            <tr>
+                <td>21:53</td>
+                <td>に</td>
+                <td align=center bgcolor="#66c2a5">山手線:down</td>
+                <td>を</td>
+                <td align=center>池袋</td>
+                <td>まで乗って</td>
+                <td align=center>(21:56に到着)</td>
+            </tr>
+            
+            <tr>
+                <td>21:58</td>
+                <td>に</td>
+                <td align=center bgcolor="#66c2a5">山手線:down</td>
+                <td>を</td>
+                <td align=center>目白</td>
+                <td>まで乗って</td>
+                <td align=center>(22:01に到着)</td>
+            </tr>
+            
+            <tr>
+                <td>22:02</td>
+                <td>に</td>
+                <td align=center bgcolor="#66c2a5">山手線:down</td>
+                <td>を</td>
+                <td align=center>高田馬場</td>
+                <td>まで乗って</td>
+                <td align=center>(22:04に到着)</td>
+            </tr>
+            
+            <tr>
+                <td>22:06</td>
+                <td>に</td>
+                <td align=center bgcolor="#66c2a5">山手線:down</td>
+                <td>を</td>
+                <td align=center>新大久保</td>
+                <td>まで乗って</td>
+                <td align=center>(22:08に到着)</td>
+            </tr>
+            
+        </table><p/>
+        22:08に新大久保に到着します。
+        
+        
+    </body>
+</html>
+
+
