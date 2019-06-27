@@ -12,6 +12,83 @@ app.debug = True
 networkJson = urlfetch.fetch("https://tokyo.fantasy-transit.appspot.com/net?format=json").content  # ウェブサイトから電車の線路情報をJSON形式でダウンロードする
 network = json.loads(networkJson.decode('utf-8'))  # JSONとしてパースする（stringからdictのlistに変換する）
 
+class Station:
+    def __init__(self, name):
+        self.name = name
+        self.is_visited = False
+
+def make_graph(rosen_list):
+    station_links_dict = {}
+    for rosen in rosen_list:
+        for i in range(len(rosen['Stations'])-1):
+            if rosen['Stations'][i] in station_links_dict:
+                station_links_dict[rosen['Stations'][i]].append(rosen['Stations'][i+1])
+            else:
+                station_links_dict[rosen['Stations'][i]] = [rosen['Stations'][i+1]]
+            if rosen['Stations'][i+1] in station_links_dict:
+                station_links_dict[rosen['Stations'][i+1]].append(rosen['Stations'][i])
+            else:
+                station_links_dict[rosen['Stations'][i+1]] = [rosen['Stations'][i]]
+    return station_links_dict
+
+def make_station_list(rosen_list):
+    station_list = []
+    for rosen in rosen_list:
+        for i in range(len(rosen['Stations'])):
+            if Station(rosen['Stations'][i]) not in station_list:
+                station_list.append(Station(rosen['Stations'][i]))
+    return station_list
+
+def is_visited(station_name, station_list):
+    for a in station_list:
+        if station_name == a.name:
+            a.is_visited = True
+            break
+
+def check_is_visited(station_name, station_list):
+    for a in station_list:
+        if station_name == a.name:
+            return a.is_visited
+
+def BFS(from_A, to_B, graph, station_list):
+    path = []
+    que = []
+    que.append(from_A)
+    is_visited(from_A, station_list)
+    
+    while que:
+        current_station = que.pop(0)
+        path.append(current_station)
+        if current_station== to_B:
+            return path
+        unreached_count = 0
+        for a in graph[current_station]:
+            if check_is_visited(a, station_list) == False:
+                que.append(a)
+                is_visited(a, station_list)
+                unreached_count += 1
+        if unreached_count == 0:
+            path.pop()
+    return 'Not Connected'
+
+def make_shotest_path(from_A, to_B, rosen_list, graph):
+    station_list = make_station_list(rosen_list)
+    path = BFS(from_A, to_B, graph, station_list)
+    
+    length = len(path)
+    cur = path[length-1]
+    shotest_path = [cur]
+    
+    for i in range(length-2, -1, -1):
+        if path[i] in graph[cur]:
+            shotest_path.insert(0, path[i])
+            cur = path[i]
+            
+    return shotest_path
+
+graph = make_graph(network)
+
+
 @app.route('/')
 # / のリクエスト（例えば http://localhost:8080/ ）をこの関数で処理する。
 # ここでメニューを表示をしているだけです。
@@ -66,7 +143,8 @@ def norikae():
   fromA = request.args.get('from', '')
   toB = request.args.get('to', '')
   #print ('fromA = %s' % fromA)
-  return render_template('norikae.html', network=network, result=result)
+  path = make_shotest_path(fromA, toB, network, graph)
+  return render_template('norikae.html', network=network, result=result, path = path, fromA=fromA, toB=toB)
 
 def printA():
   print 'A'

@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="pure/pure-min.css">
             </head>
     <body>
-        <form action="/norikae/search">
+        <form action="/norikae">
             出発：
             <select name="from">
                 
@@ -555,8 +555,29 @@
                 <input type=hidden name="world" value="tokyo">
                     <input type=submit value="乗り換え案内">
                         </form>
-        
-        
+
+	{% if path == [] %}
+	pathは空
+	{% endif %}
+	{% if path != [] %}
+        {{fromA}}から出発し<p/>
+	<table border=0>
+	  
+	  {% for a in path %}
+	  <tr>
+	    <td>00:00</td>
+	    <td>に</td>
+	    <td align=center bgcolor="#66c2a5">山手線:down</td>
+	    <td>を</td>
+	    <td align=center>{{a}}</td>
+	    <td>まで乗って</td>
+	    <td align=center>(00:00に到着)</td>
+	  {% endfor %}
+
+	</table><p/>
+	22:08に{{toB}}に到着します。
+	{% endif %}
+
     </body>
 </html>
 
