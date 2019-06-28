@@ -22,13 +22,13 @@ def make_graph(rosen_list):
     for rosen in rosen_list:
         for i in range(len(rosen['Stations'])-1):
             if rosen['Stations'][i] in station_links_dict:
-                station_links_dict[rosen['Stations'][i]].append(rosen['Stations'][i+1])
+                station_links_dict[rosen['Stations'][i]][rosen['Stations'][i+1]] = rosen['Name']
             else:
-                station_links_dict[rosen['Stations'][i]] = [rosen['Stations'][i+1]]
+                station_links_dict[rosen['Stations'][i]] = {rosen['Stations'][i+1]:rosen['Name']}
             if rosen['Stations'][i+1] in station_links_dict:
-                station_links_dict[rosen['Stations'][i+1]].append(rosen['Stations'][i])
+                station_links_dict[rosen['Stations'][i+1]][rosen['Stations'][i]] = rosen['Name']
             else:
-                station_links_dict[rosen['Stations'][i+1]] = [rosen['Stations'][i]]
+                station_links_dict[rosen['Stations'][i+1]] = {rosen['Stations'][i]:rosen['Name']}
     return station_links_dict
 
 def make_station_list(rosen_list):
@@ -77,11 +77,11 @@ def make_shotest_path(from_A, to_B, rosen_list, graph):
     
     length = len(path)
     cur = path[length-1]
-    shotest_path = [cur]
+    shotest_path = []
     
     for i in range(length-2, -1, -1):
         if path[i] in graph[cur]:
-            shotest_path.insert(0, path[i])
+            shotest_path.insert(0, [path[i], cur, graph[cur][path[i]]])
             cur = path[i]
             
     return shotest_path
@@ -94,17 +94,7 @@ graph = make_graph(network)
 # ここでメニューを表示をしているだけです。
 def root():
   return render_template('hello.html')
-"""
-  return ('''
-<body>
-	<h1>Hello!</h1>
-  <ul>
-    <li><a href=/pata>パタトクカシーー</a></li>
-    <li><a href=/norikae>乗換案内</a></li>
-  </ul>
-</body>
-''')
-"""
+
 
 @app.route('/pata')
 # /pata のリクエスト（例えば http://localhost:8080/pata ）をこの関数で処理する。
@@ -144,7 +134,8 @@ def norikae():
   toB = request.args.get('to', '')
   #print ('fromA = %s' % fromA)
   path = make_shotest_path(fromA, toB, network, graph)
-  return render_template('norikae.html', network=network, result=result, path = path, fromA=fromA, toB=toB)
+  length = len(path)
+  return render_template('norikae.html', network=network, result=result, path = path, fromA=fromA, toB=toB, length=length)
 
 def printA():
   print 'A'
